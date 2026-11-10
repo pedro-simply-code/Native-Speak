@@ -166,6 +166,9 @@ importers:
 
   .:
     dependencies:
+      '@t3-oss/env-nextjs':
+        specifier: ^0.13.11
+        version: 0.13.11(typescript@5.9.3)(zod@4.6.7)
       next:
         specifier: 16.4.5
         version: 16.4.5(@babel/core@7.29.13(supports-color@7.2.0))(@types/node@20.19.43)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -175,6 +178,9 @@ importers:
       react-dom:
         specifier: 19.3.0
         version: 19.3.0(react@19.3.0)
+      zod:
+        specifier: ^4.6.7
+        version: 4.6.7
     devDependencies:
       '@tailwindcss/turbopack':
         specifier: ^4
@@ -197,6 +203,9 @@ importers:
       eslint-config-next:
         specifier: 16.4.5
         version: 16.4.5(@typescript-eslint/parser@8.72.1(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
+      eslint-plugin-no-relative-import-paths:
+        specifier: ^1.7.3
+        version: 1.7.3
       tailwindcss:
         specifier: ^4
         version: 4.3.5
@@ -601,6 +610,40 @@ packages:
 
   '@swc/helpers@0.5.23':
     resolution: {integrity: sha512-5lSsMOTXURePglDfvuAQUqkGek9Hg2kksOYay2m0+XR++b2NWYL/4sWyuvVBIs8oKnJaxkdi9whaL/sqN13afw==}
+
+  '@t3-oss/env-core@0.13.11':
+    resolution: {integrity: sha512-sM7GYY+KL7H/Hl0BE0inWfk3nRHZOLhmVn7sHGxaZt9FAR6KqREXAE+6TqKfiavfXmpRxO/OZ2QgKRd+oiBYRQ==}
+    peerDependencies:
+      arktype: ^2.1.0
+      typescript: '>=5.0.0'
+      valibot: ^1.0.0-beta.7 || ^1.0.0
+      zod: ^3.24.0 || ^4.0.0
+    peerDependenciesMeta:
+      arktype:
+        optional: true
+      typescript:
+        optional: true
+      valibot:
+        optional: true
+      zod:
+        optional: true
+
+  '@t3-oss/env-nextjs@0.13.11':
+    resolution: {integrity: sha512-NC+3j7YWgpzdFu1t5y/8wqibTK0lm5RS4bjXA1n8uwik3wIR4iZM4Fa+U2BaMa5k3Qk8RZiYhoAIX0WogmGkzg==}
+    peerDependencies:
+      arktype: ^2.1.0
+      typescript: '>=5.0.0'
+      valibot: ^1.0.0-beta.7 || ^1.0.0
+      zod: ^3.24.0 || ^4.0.0
+    peerDependenciesMeta:
+      arktype:
+        optional: true
+      typescript:
+        optional: true
+      valibot:
+        optional: true
+      zod:
+        optional: true
 
   '@tailwindcss/node@4.3.5':
     resolution: {integrity: sha512-yT53FzV4ke0cr/BguDxhWMpm5MJu1O2muzk+tKw6lKHjODAsYArBbWwFbJiaksfzFv1tpkO9QHGzmfs1hJT66g==}
@@ -1209,6 +1252,9 @@ packages:
     engines: {node: '>=4.0'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
+
+  eslint-plugin-no-relative-import-paths@1.7.3:
+    resolution: {integrity: sha512-vEpNX0fvhoHdBu8eI05+XXYswnGHW2HJYmnJJeR8zOwgo59GgWv98z22XyZvMEHHcjSX4yGX2Ni/GyxGpBjfgw==}
 
   eslint-plugin-react-hooks@7.1.1:
     resolution: {integrity: sha512-f2I7Gw6JbvCexzIInuSbZpfdQ44D7iqdWX01FKLvrPgqxoE7oMj8clOfto8U6vYiz4yd5oKu39rRSVOe1zRu0g==}
@@ -2498,6 +2544,18 @@ snapshots:
     dependencies:
       tslib: 2.9.1
 
+  '@t3-oss/env-core@0.13.11(typescript@5.9.3)(zod@4.6.7)':
+    optionalDependencies:
+      typescript: 5.9.3
+      zod: 4.6.7
+
+  '@t3-oss/env-nextjs@0.13.11(typescript@5.9.3)(zod@4.6.7)':
+    dependencies:
+      '@t3-oss/env-core': 0.13.11(typescript@5.9.3)(zod@4.6.7)
+    optionalDependencies:
+      typescript: 5.9.3
+      zod: 4.6.7
+
   '@tailwindcss/node@4.3.5':
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -3198,6 +3256,8 @@ snapshots:
       object.fromentries: 2.0.8
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
+
+  eslint-plugin-no-relative-import-paths@1.7.3: {}
 
   eslint-plugin-react-hooks@7.1.1(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:

@@ -20,6 +20,10 @@
 # production
 /build
 
+# cursor + agent skills (hooks, Impeccable, skills CLI via junction)
+.cursor
+.agents
+
 # misc
 .DS_Store
 *.pem

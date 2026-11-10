@@ -1,7 +1,18 @@
+/**
+ * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
+ * for Docker builds.
+ */
+import "@/env.js";
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "cdn.pixabay.com" },
+    ],
+  },
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,

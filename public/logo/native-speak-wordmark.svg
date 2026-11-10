@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 228 48" fill="none" role="img" aria-labelledby="title">
+  <title>Native Speak</title>
+  <g transform="translate(2 2)">
+    <path d="M12 38V12" stroke="#0f5249" stroke-width="2.6" stroke-linecap="round" />
+    <path d="M12 38 33 12" stroke="#0f5249" stroke-width="2.6" stroke-linecap="round" />
+    <path d="M33 12v26" stroke="#0f5249" stroke-width="2.6" stroke-linecap="round" />
+    <path
+      d="M12 15.5c1.2-1.4 4-1.2 5.2 1.2.7 1.5.6 3.2-.2 4.5"
+      stroke="#0f5249"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      fill="none"
+    />
+    <circle cx="13.6" cy="17.2" r="1.25" fill="#0f5249" />
+    <path d="M15.5 23.8c1.8 1.5 4 1.2 5.6-.2" stroke="#0f5249" stroke-width="1.55" stroke-linecap="round" fill="none" />
+    <path d="M20.5 22.2c2.6-1 4.8-.2 6.8 1.4" stroke="#b84a26" stroke-width="1.65" stroke-linecap="round" />
+    <path d="M21 25.5c3-.7 5.6.4 7.5 2.5" stroke="#b84a26" stroke-width="1.55" stroke-linecap="round" opacity="0.88" />
+  </g>
+  <text
+    x="50"
+    y="31"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="22"
+    font-weight="600"
+    fill="#0f5249"
+    letter-spacing="-0.02em"
+  >
+    Native Speak
+  </text>
+</svg>
