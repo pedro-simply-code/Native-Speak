@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Stack from "@mui/material/Stack";
 import { TeacherApplicationUploadForm } from "@/components/dashboard/teacher/application-upload-form";
+import { TeacherInviteAcceptCard } from "@/components/dashboard/teacher/teacher-invite-accept-card";
 import { DashboardPageHeader } from "@/components/dashboard/modernize/dashboard-page-header";
 import { OverviewChartsPanel } from "@/components/dashboard/modernize/overview-charts-panel";
 import { useDashboardI18n } from "@/components/dashboard/i18n/dashboard-i18n-provider";
@@ -32,6 +33,7 @@ export function TeacherOverview({
         description={t("teacherOverview.subtitle")}
         actions={<TeacherApplicationUploadForm />}
       />
+      {profile?.status === "invited" ? <TeacherInviteAcceptCard /> : null}
       {profile ? (
         <div className="dash-card dash-card--lift space-y-2 p-5 text-sm">
           <p>

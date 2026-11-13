@@ -66,6 +66,7 @@ export function AdminOverview({ stats, charts }: Props) {
   ];
 
   const quickLinks = [
+    { href: "/dashboard/admin/users", labelKey: "adminOverview.quickUserRoles" },
     { href: "/dashboard/admin/managers", labelKey: "adminOverview.quickManagers" },
     { href: "/dashboard/teachers", labelKey: "adminOverview.quickTeachers" },
     { href: "/dashboard/admin/families", labelKey: "adminOverview.quickFamilies" },

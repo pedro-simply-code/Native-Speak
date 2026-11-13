@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
+import { MarketingButton } from "@/components/marketing/marketing-button";
 import { registerFamilyAccount } from "@/server/actions/auth-register";
 import {
   PROFICIENCY_LEVELS,
@@ -34,7 +35,8 @@ export function RegisterFamilyForm({ showGoogle }: { showGoogle: boolean }) {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = new FormData(e.currentTarget);
+    const formEl = e.currentTarget;
+    const form = new FormData(formEl);
     const result = await registerFamilyAccount({
       email: String(form.get("email") ?? ""),
       password: String(form.get("password") ?? ""),
@@ -247,9 +249,9 @@ export function RegisterFamilyForm({ showGoogle }: { showGoogle: boolean }) {
           placeholder="Password"
           className="w-full rounded border px-3 py-2 text-sm"
         />
-        <button type="submit" className="dash-btn-primary w-full">
+        <MarketingButton type="submit" size="sm" className="w-full">
           Register with email
-        </button>
+        </MarketingButton>
         {state ? (
           <p className={`text-sm ${state.ok ? "text-green-800" : "text-red-700"}`}>
             {state.text}

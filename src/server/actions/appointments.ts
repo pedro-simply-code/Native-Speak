@@ -20,6 +20,7 @@ import {
   classAppointments,
   familyProfiles,
   students,
+  teacherProfiles,
   users,
 } from "@/server/db/schema";
 import { notifyUser } from "@/server/notifications/service";
@@ -57,6 +58,21 @@ export async function bookFamilyClass(input: z.infer<typeof bookSchema>) {
     return {
       ok: false as const,
       error: "No class credits. Buy a package under Payments first.",
+    };
+  }
+
+  const dbCheck = await requireDbAtRequest();
+  const [teacherProfile] = await dbCheck
+    .select({ status: teacherProfiles.status })
+    .from(teacherProfiles)
+    .where(eq(teacherProfiles.userId, parsed.data.teacherUserId))
+    .limit(1);
+
+  if (!teacherProfile || teacherProfile.status !== "active") {
+    return {
+      ok: false as const,
+      error:
+        "This teacher is not ready for bookings yet (credentials / manager approval still pending).",
     };
   }
 

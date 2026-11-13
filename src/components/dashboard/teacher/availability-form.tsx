@@ -92,8 +92,9 @@ export function TeacherAvailabilityForm({
           className="grid gap-3 sm:grid-cols-2"
           onSubmit={async (e) => {
             e.preventDefault();
+            const form = e.currentTarget;
             setLoadingWeekly(true);
-            const f = new FormData(e.currentTarget);
+            const f = new FormData(form);
             const res = await addWeeklySlot({
               dayOfWeek: Number(f.get("dayOfWeek")),
               startTime: String(f.get("startTime")),
@@ -103,7 +104,7 @@ export function TeacherAvailabilityForm({
             setMsg(res.ok ? "Slot saved." : res.error);
             if (res.ok) {
               setWeekly(await listWeeklyAvailability());
-              e.currentTarget.reset();
+              form.reset();
               setWeeklyOpen(false);
             }
           }}
@@ -188,8 +189,9 @@ export function TeacherAvailabilityForm({
           className="grid gap-3"
           onSubmit={async (e) => {
             e.preventDefault();
+            const form = e.currentTarget;
             setLoadingBlock(true);
-            const f = new FormData(e.currentTarget);
+            const f = new FormData(form);
             const res = await addCalendarBlock({
               blockDate: String(f.get("blockDate")),
               reason: String(f.get("reason") ?? ""),
@@ -198,7 +200,7 @@ export function TeacherAvailabilityForm({
             setMsg(res.ok ? "Block saved." : res.error);
             if (res.ok) {
               setBlocks(await listCalendarBlocks());
-              e.currentTarget.reset();
+              form.reset();
               setBlockOpen(false);
             }
           }}

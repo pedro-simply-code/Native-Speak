@@ -33,6 +33,7 @@ export const es = {
     ecommerce: "Pagos",
     security: "Seguridad",
     content: "Blog y páginas",
+    userRoles: "Usuarios",
     studyBuilder: "Materiales de estudio",
     studyJournal: "Diario de estudio",
     dashboard: "Panel",
@@ -77,6 +78,10 @@ export const es = {
         title: "Invitación aceptada",
         body: "{name} se unió como {role}.",
       },
+      staffRoleOffer: {
+        title: "Invitación de rol {role}",
+        body: "Abre esta notificación para aceptar el rol {role} en tu cuenta.",
+      },
       teacherApplication: {
         title: "Nueva solicitud de profesor",
         body: "{name} subió {count} documento(s) para revisión.",
@@ -112,6 +117,30 @@ export const es = {
     quickInvitations: "Invitaciones pendientes",
     quickBilling: "Pagos",
     quickApplications: "Solicitudes de profesor",
+    quickUserRoles: "Gestionar roles",
+  },
+  adminUserRoles: {
+    title: "Usuarios",
+    description:
+      "Busca usuarios registrados y asigna o quita roles. El staff sigue completando el onboarding (credenciales, revisión de solicitud, etc.).",
+    intro:
+      "Asignar un rol da acceso al dashboard de ese rol; no omite credenciales ni la aprobación de solicitudes de maestro.",
+    searchLabel: "Buscar por correo o nombre",
+    searchPlaceholder: "nombre o correo@ejemplo.com",
+    searching: "Buscando…",
+    noResults: "No hay usuarios con esa búsqueda.",
+    add: "Añadir",
+    remove: "Quitar",
+    working: "…",
+    accountStatus: "Cuenta",
+    joined: "Registro",
+    rolesLabel: "Roles",
+    teacherNote:
+      "Rol maestro: acceso al portal de maestro; aún se requieren credenciales y aprobación de la solicitud.",
+    profileStatus: "Perfil",
+    applicationStatus: "Solicitud",
+    noTeacherProfile:
+      "Aún no hay fila de perfil de maestro (se crea al añadir el rol).",
   },
   overviewCharts: {
     kpiRevenue: "Ingresos totales",
@@ -153,6 +182,14 @@ export const es = {
     manageAvailability: "Gestionar disponibilidad",
     appointments: "Citas",
   },
+  teacherInvite: {
+    title: "Invitación de profesor pendiente",
+    body: "Un administrador te asignó el rol de profesor. Acéptala aquí para pasar a activo y aparecer en el agendado de familias.",
+    accept: "Aceptar invitación",
+    working: "Confirmando…",
+    success:
+      "Ya eres profesor activo. Configura tu disponibilidad para que las familias puedan reservar.",
+  },
   language: {
     choose: "Elegir idioma",
   },
@@ -174,12 +211,27 @@ export const es = {
       "Con más de 24h suele ser gratis; cambios tardíos pueden costar 1 crédito. Emergencias requieren aprobación.",
     requestPending: "Solicitud enviada para revisión del manager.",
     requestApproved: "Cambio aplicado.",
+    student: "Estudiante",
+    teacher: "Profesor",
+    when: "Cuándo",
+    duration: "Duración",
+    durationMinutes: "25 minutos",
+    statusLabel: "Estado",
+    unknownStudent: "Sin asignar",
+    lessonNote: "Nota del profesor",
     reasons: {
       schedule_conflict: "Conflicto de horario",
       illness: "Enfermedad",
       emergency: "Emergencia",
       travel: "Viaje",
       other: "Otro",
+    },
+    status: {
+      scheduled: "Agendada",
+      completed: "Completada",
+      cancelled: "Cancelada",
+      no_show: "Ausencia",
+      rescheduled: "Reprogramada",
     },
   },
   billing: {

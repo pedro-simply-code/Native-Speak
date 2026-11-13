@@ -127,8 +127,9 @@ function AppointmentList({
             className="space-y-3"
             onSubmit={async (e) => {
               e.preventDefault();
+              const form = e.currentTarget;
               setLoading(true);
-              const f = new FormData(e.currentTarget);
+              const f = new FormData(form);
               const res = await saveAppointmentNote({
                 appointmentId: editing.id,
                 lessonNote: String(f.get("note") ?? ""),

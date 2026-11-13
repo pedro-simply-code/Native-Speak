@@ -28,6 +28,7 @@ import {
   appointmentChangeRequests,
   classAppointments,
   familyClassCredits,
+  students,
   users,
 } from "@/server/db/schema";
 import { notifyRoles, notifyUser } from "@/server/notifications/service";
@@ -402,8 +403,24 @@ export async function listFamilyAppointmentsDetailed(upcoming: boolean) {
   const db = await requireDbAtRequest();
   const now = new Date();
   const rows = await db
-    .select()
+    .select({
+      id: classAppointments.id,
+      startsAt: classAppointments.startsAt,
+      endsAt: classAppointments.endsAt,
+      status: classAppointments.status,
+      meetingUrl: classAppointments.meetingUrl,
+      lessonNote: classAppointments.lessonNote,
+      taught: classAppointments.taught,
+      studentFirstName: students.firstName,
+      studentLastName: students.lastName,
+      studentGrade: students.grade,
+      studentProficiency: students.proficiency,
+      teacherName: users.name,
+      teacherEmail: users.email,
+    })
     .from(classAppointments)
+    .leftJoin(students, eq(students.id, classAppointments.studentId))
+    .innerJoin(users, eq(users.id, classAppointments.teacherUserId))
     .where(
       and(
         eq(classAppointments.familyUserId, session.user.id),

@@ -56,8 +56,9 @@ export function StudentsPanel({
           className="space-y-3"
           onSubmit={async (e) => {
             e.preventDefault();
+            const form = e.currentTarget;
             setLoading(true);
-            const f = new FormData(e.currentTarget);
+            const f = new FormData(form);
             const res = await addStudent({
               firstName: String(f.get("firstName")),
               lastName: String(f.get("lastName")),
@@ -74,7 +75,7 @@ export function StudentsPanel({
             if (res.ok) {
               setRows(await listFamilyStudents());
               setMsg("Student added.");
-              e.currentTarget.reset();
+              form.reset();
               setOpen(false);
             } else {
               setMsg(res.error);

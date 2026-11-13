@@ -9,6 +9,76 @@ import { useDashboardI18n } from "@/components/dashboard/i18n/dashboard-i18n-pro
 
 type Row = Awaited<ReturnType<typeof listFamilyAppointmentsDetailed>>[number];
 
+function studentLabel(row: Row) {
+  if (!row.studentFirstName && !row.studentLastName) return null;
+  const name = [row.studentFirstName, row.studentLastName].filter(Boolean).join(" ");
+  const extra = [row.studentGrade, row.studentProficiency].filter(Boolean);
+  return extra.length ? `${name} (${extra.join(" · ")})` : name;
+}
+
+function formatClassWhen(start: Date, end: Date) {
+  const startStr = start.toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+  const endStr = end.toLocaleTimeString(undefined, { timeStyle: "short" });
+  return `${startStr} – ${endStr}`;
+}
+
+function ClassDetails({
+  row,
+  t,
+}: {
+  row: Row;
+  t: (key: string) => string;
+}) {
+  const student = studentLabel(row);
+  const teacher = row.teacherName ?? row.teacherEmail ?? "—";
+  const statusKey = `scheduling.status.${row.status}`;
+
+  return (
+    <div className="space-y-1">
+      <p className="font-semibold text-[var(--dash-ink)]">
+        {formatClassWhen(row.startsAt, row.endsAt)}
+      </p>
+      <dl className="mt-2 grid gap-1 text-[var(--dash-muted)] sm:grid-cols-2">
+        <div>
+          <dt className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-muted)]">
+            {t("scheduling.student")}
+          </dt>
+          <dd className="text-[var(--dash-ink)]">
+            {student ?? t("scheduling.unknownStudent")}
+          </dd>
+        </div>
+        <div>
+          <dt className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-muted)]">
+            {t("scheduling.teacher")}
+          </dt>
+          <dd className="text-[var(--dash-ink)]">{teacher}</dd>
+        </div>
+        <div>
+          <dt className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-muted)]">
+            {t("scheduling.duration")}
+          </dt>
+          <dd className="text-[var(--dash-ink)]">{t("scheduling.durationMinutes")}</dd>
+        </div>
+        <div>
+          <dt className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-muted)]">
+            {t("scheduling.statusLabel")}
+          </dt>
+          <dd className="text-[var(--dash-ink)]">{t(statusKey)}</dd>
+        </div>
+      </dl>
+      {row.lessonNote ? (
+        <p className="mt-2 text-xs text-[var(--dash-muted)]">
+          <span className="font-semibold">{t("scheduling.lessonNote")}:</span>{" "}
+          {row.lessonNote}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 const REASONS = [
   "schedule_conflict",
   "illness",
@@ -86,9 +156,8 @@ export function FamilyClassesPanel({
                 className="flex flex-wrap items-center justify-between gap-2 border-b pb-2"
                 style={{ borderColor: "var(--dash-border)" }}
               >
-                <div>
-                  <p className="font-semibold">{c.startsAt.toLocaleString()}</p>
-                  <p className="text-[var(--dash-muted)]">{c.status}</p>
+                <div className="min-w-0 flex-1">
+                  <ClassDetails row={c} t={t} />
                   {c.meetingUrl ? (
                     <a
                       href={c.meetingUrl}
@@ -132,8 +201,12 @@ export function FamilyClassesPanel({
             <li className="text-[var(--dash-muted)]">{t("scheduling.nonePast")}</li>
           ) : (
             past.map((c) => (
-              <li key={c.id}>
-                {c.startsAt.toLocaleString()} — {c.status}
+              <li
+                key={c.id}
+                className="border-b pb-3"
+                style={{ borderColor: "var(--dash-border)" }}
+              >
+                <ClassDetails row={c} t={t} />
               </li>
             ))
           )}
@@ -174,6 +247,9 @@ export function FamilyClassesPanel({
               void submit(e.currentTarget);
             }}
           >
+            <hr className="border-[var(--dash-border)]" />
+            <ClassDetails row={dialog.row} t={t} />
+            <hr className="border-[var(--dash-border)]" />
             <label className="block text-sm font-semibold">
               {t("scheduling.reason")}
               <select

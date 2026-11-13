@@ -99,8 +99,9 @@ export function FamilyScheduleForm({
           className="space-y-4"
           onSubmit={async (e) => {
             e.preventDefault();
+            const form = e.currentTarget;
             setLoading(true);
-            const f = new FormData(e.currentTarget);
+            const f = new FormData(form);
             const res = await bookFamilyClass({
               teacherUserId: String(f.get("teacherUserId")),
               studentId: String(f.get("studentId")),

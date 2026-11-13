@@ -1,6 +1,6 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { requireDb, requireDbAtRequest } from "@/server/db";
@@ -8,6 +8,7 @@ import {
   familyProfiles,
   students,
   teacherProfiles,
+  userRoles,
   users,
 } from "@/server/db/schema";
 
@@ -108,7 +109,12 @@ export async function listActiveTeachers() {
     })
     .from(teacherProfiles)
     .innerJoin(users, eq(users.id, teacherProfiles.userId))
-    .where(eq(teacherProfiles.status, "active"));
+    .innerJoin(
+      userRoles,
+      and(eq(userRoles.userId, users.id), eq(userRoles.role, "teacher")),
+    )
+    .where(eq(teacherProfiles.status, "active"))
+    .orderBy(users.name);
 }
 
 export async function getFamilyProfile() {

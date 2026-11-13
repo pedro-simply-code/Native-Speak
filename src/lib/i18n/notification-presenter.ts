@@ -48,6 +48,21 @@ export function presentNotification(
         }),
       };
     }
+    case "invite.staff_role": {
+      const roleKey = metaString(meta, "role") || "staff";
+      const role =
+        roleKey === "manager"
+          ? t("roles.manager")
+          : roleKey === "teacher"
+            ? t("roles.teacher")
+            : roleKey === "family"
+              ? t("roles.family")
+              : roleKey;
+      return {
+        title: t("notifications.kinds.staffRoleOffer.title", { role }),
+        body: t("notifications.kinds.staffRoleOffer.body", { role }),
+      };
+    }
     case "invite.accepted": {
       const roleKey = metaString(meta, "role") || "staff";
       const role =

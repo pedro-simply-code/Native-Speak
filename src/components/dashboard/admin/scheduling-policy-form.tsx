@@ -18,8 +18,9 @@ export function SchedulingPolicyForm({
       className="dash-card max-w-xl space-y-4 p-5"
       onSubmit={async (e) => {
         e.preventDefault();
+        const form = e.currentTarget;
         setLoading(true);
-        const f = new FormData(e.currentTarget);
+        const f = new FormData(form);
         const res = await updateSchedulingPolicy({
           freeCancelHours: Number(f.get("freeCancelHours")),
           lateCancelPenaltyCredits: Number(f.get("lateCancelPenaltyCredits")),

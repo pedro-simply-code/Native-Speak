@@ -77,11 +77,11 @@ function PlanCard({
         ))}
       </ul>
       <p className="mt-4 text-xs text-[var(--theme-muted)]">{plan.monthlyNote}</p>
-      <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-        <MarketingButton href={siteNav.loginHref} size="sm" className="flex-1 justify-center">
+      <div className="mt-5 flex flex-col gap-2">
+        <MarketingButton href={siteNav.loginHref} size="sm" className="w-full justify-center">
           {ui.buildQuote}
         </MarketingButton>
-        <MarketingButton href={siteNav.trialHref} size="sm" variant="soft" className="flex-1 justify-center">
+        <MarketingButton href={siteNav.trialHref} size="sm" variant="soft" className="w-full justify-center">
           {ui.tryFreeClass}
         </MarketingButton>
       </div>
@@ -99,100 +99,124 @@ export function PricingPlanPicker() {
     [duration, classType],
   );
 
+  const steps = m.pricingPage.steps;
+
   return (
     <div className="mx-auto w-full max-w-[var(--theme-content-max)] px-5 sm:px-6">
-      <ol className="grid gap-6 lg:grid-cols-3">
-        {m.pricingPage.steps.map((label, index) => (
-          <li key={label}>
-            <p className="mk-eyebrow">
-              {m.ui.stepLabel.replace("{n}", String(index + 1))}
-            </p>
-            <h2 className="mt-2 font-[family-name:var(--font-display)] text-lg font-semibold text-[var(--theme-ink)]">
-              {label}
-            </h2>
-          </li>
-        ))}
-      </ol>
+      <div className="space-y-10">
+        <section
+          className="border-b pb-10"
+          style={{ borderColor: "var(--theme-line)" }}
+        >
+          <p className="mk-eyebrow">
+            {m.ui.stepLabel.replace("{n}", "1")}
+          </p>
+          <h2 className="mt-2 font-[family-name:var(--font-display)] text-xl font-semibold text-[var(--theme-ink)] sm:text-2xl">
+            {steps[0]}
+          </h2>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {pricingDurationOptions.map((option) => {
+              const selected = duration === option.id;
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => setDuration(option.id)}
+                  className="px-4 py-2 text-sm font-semibold transition-colors"
+                  style={{
+                    borderRadius: "var(--theme-radius-button)",
+                    background: selected
+                      ? "var(--theme-primary-deep)"
+                      : "var(--theme-surface)",
+                    color: selected ? "#fff" : "var(--theme-primary-deep)",
+                    border: selected
+                      ? "none"
+                      : "var(--theme-border-width) solid var(--theme-line)",
+                  }}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </section>
 
-      <div className="mt-8 flex flex-wrap gap-2">
-        {pricingDurationOptions.map((option) => {
-          const selected = duration === option.id;
-          return (
-            <button
-              key={option.id}
-              type="button"
-              onClick={() => setDuration(option.id)}
-              className="px-4 py-2 text-sm font-semibold transition-colors"
-              style={{
-                borderRadius: "var(--theme-radius-button)",
-                background: selected
-                  ? "var(--theme-primary-deep)"
-                  : "var(--theme-surface)",
-                color: selected ? "#fff" : "var(--theme-primary-deep)",
-                border: selected
-                  ? "none"
-                  : "var(--theme-border-width) solid var(--theme-line)",
-              }}
-            >
-              {option.label}
-            </button>
-          );
-        })}
-      </div>
+        <section
+          className="border-b pb-10"
+          style={{ borderColor: "var(--theme-line)" }}
+        >
+          <p className="mk-eyebrow">
+            {m.ui.stepLabel.replace("{n}", "2")}
+          </p>
+          <h2 className="mt-2 font-[family-name:var(--font-display)] text-xl font-semibold text-[var(--theme-ink)] sm:text-2xl">
+            {steps[1]}
+          </h2>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {pricingClassTypeOptions.map((option) => {
+              const selected = classType === option.id;
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => setClassType(option.id)}
+                  className="flex flex-col px-4 py-3 text-left transition-colors"
+                  style={{
+                    borderRadius: "var(--theme-radius-button)",
+                    background: selected
+                      ? "var(--theme-primary-deep)"
+                      : "var(--theme-surface)",
+                    color: selected ? "#fff" : "var(--theme-primary-deep)",
+                    border: selected
+                      ? "none"
+                      : "var(--theme-border-width) solid var(--theme-line)",
+                  }}
+                >
+                  <span className="text-sm font-semibold">{option.label}</span>
+                  <span
+                    className={`text-xs ${selected ? "text-white/85" : "text-[var(--theme-muted)]"}`}
+                  >
+                    {option.description}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
 
-      <div className="mk-segmented mt-4 flex max-w-xl flex-col gap-1 sm:flex-row">
-        {pricingClassTypeOptions.map((option) => {
-          const selected = classType === option.id;
-          return (
-            <button
-              key={option.id}
-              type="button"
-              onClick={() => setClassType(option.id)}
-              className="flex flex-1 flex-col px-4 py-3 text-left transition-colors"
-              style={{
-                borderRadius: "var(--theme-radius-button)",
-                background: selected
-                  ? "var(--theme-primary-deep)"
-                  : "transparent",
-                color: selected ? "#fff" : "var(--theme-primary-deep)",
-              }}
-            >
-              <span className="text-sm font-semibold">{option.label}</span>
-              <span
-                className={`text-xs ${selected ? "text-white/85" : "text-[var(--theme-muted)]"}`}
+        <section>
+          <p className="mk-eyebrow">
+            {m.ui.stepLabel.replace("{n}", "3")}
+          </p>
+          <h2 className="mt-2 font-[family-name:var(--font-display)] text-xl font-semibold text-[var(--theme-ink)] sm:text-2xl">
+            {steps[2]}
+          </h2>
+          <Reveal className="mt-5">
+            <h3 className="font-[family-name:var(--font-display)] text-lg font-semibold text-[var(--theme-ink)] sm:text-xl">
+              {tier.sectionTitle}
+            </h3>
+            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--theme-muted)]">
+              {tier.intro}{" "}
+              <Link
+                href="/how-it-works#faq"
+                className="font-semibold text-[var(--theme-primary)] underline-offset-2 hover:underline"
               >
-                {option.description}
-              </span>
-            </button>
-          );
-        })}
+                {m.ui.faqLink}
+              </Link>
+              .
+            </p>
+          </Reveal>
+
+          <ul className="mt-8 grid gap-6 lg:grid-cols-3">
+            {tier.plans.map((plan, index) => (
+              <li key={plan.classCount} className="h-full">
+                <Reveal delayMs={index * 60} className="h-full">
+                  <PlanCard plan={plan} siteNav={m.siteNav} ui={m.ui} />
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
-
-      <Reveal className="mt-10">
-        <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-[var(--theme-ink)] sm:text-3xl">
-          {tier.sectionTitle}
-        </h2>
-        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--theme-muted)]">
-          {tier.intro}{" "}
-          <Link
-            href="/how-it-works#faq"
-            className="font-semibold text-[var(--theme-primary)] underline-offset-2 hover:underline"
-          >
-            {m.ui.faqLink}
-          </Link>
-          .
-        </p>
-      </Reveal>
-
-      <ul className="mt-8 grid gap-6 lg:grid-cols-3">
-        {tier.plans.map((plan, index) => (
-          <li key={plan.classCount}>
-            <Reveal delayMs={index * 60}>
-              <PlanCard plan={plan} siteNav={m.siteNav} ui={m.ui} />
-            </Reveal>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

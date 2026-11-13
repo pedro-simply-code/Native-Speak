@@ -4,3 +4,17 @@
   background: var(--theme-paper);
   box-shadow: var(--theme-shadow-card, 0 2px 8px rgba(0, 0, 0, 0.06));
 }
+
+/* Login / register: fit content height — no flex gap above the footer. */
+body:has([data-auth-portal]) {
+  min-height: auto;
+}
+
+.mk-public-shell:has([data-auth-portal]) {
+  flex: none;
+  min-height: auto;
+}
+
+.mk-public-shell:has([data-auth-portal]) > main {
+  flex: none;
+}

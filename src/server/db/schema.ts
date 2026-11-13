@@ -531,6 +531,7 @@ export const apiRefreshTokens = pgTable("api_refresh_tokens", {
 export const notificationKindEnum = pgEnum("notification_kind", [
   "account.family_registered",
   "account.staff_joined",
+  "invite.staff_role",
   "invite.accepted",
   "teacher.application_submitted",
   "appointment.booked",

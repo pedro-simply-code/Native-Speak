@@ -22,14 +22,14 @@ export default function ProgramsPage() {
             const detail = programs[level.id];
             const slug = programIdToSlug[level.id];
             return (
-              <li key={level.id}>
-                <Reveal delayMs={index * 70}>
+              <li key={level.id} className="h-full">
+                <Reveal delayMs={index * 70} className="h-full">
                   <Link
                     href={`/programs/${slug}`}
-                    className="mk-card mk-card--lift group grid overflow-hidden md:grid-cols-[1.1fr_1fr]"
+                    className="mk-card mk-card--lift group grid h-full overflow-hidden md:grid-cols-[1.1fr_1fr]"
                     style={{ borderRadius: "var(--theme-radius-lg)" }}
                   >
-                    <div className="p-6">
+                    <div className="flex h-full flex-col p-6">
                       <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-[var(--theme-ink)]">
                         {detail.title}
                       </h2>
@@ -41,11 +41,11 @@ export default function ProgramsPage() {
                       <p className="mt-3 line-clamp-3 text-sm text-[var(--theme-muted)]">
                         {detail.body}
                       </p>
-                      <span className="mt-4 inline-block text-sm font-semibold text-[var(--theme-primary)]">
+                      <span className="mt-auto inline-block pt-4 text-sm font-semibold text-[var(--theme-primary)]">
                         Learn more →
                       </span>
                     </div>
-                    <figure className="relative min-h-[180px]">
+                    <figure className="relative min-h-[180px] md:h-full md:min-h-0">
                       <MarketingImage
                         src={marketingImages.programs[level.id]}
                         alt={detail.title}

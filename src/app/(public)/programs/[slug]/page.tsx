@@ -39,7 +39,7 @@ export default async function ProgramDetailPage({ params }: ProgramPageProps) {
         imageAlt={`${detail.title} program`}
       />
       <section className="mx-auto w-full max-w-[var(--theme-content-max)] px-5 py-12 sm:px-6">
-        <Reveal className="mx-auto max-w-3xl">
+        <Reveal>
           {detail.meta ? (
             <p className="text-sm font-semibold text-[var(--theme-accent)]">
               {detail.meta}

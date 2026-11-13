@@ -33,6 +33,7 @@ export const NOTIFICATION_ROUTES: Partial<Record<NotificationKind, string>> = {
   "account.family_registered": "/dashboard/admin/families",
   "account.staff_joined": "/dashboard/admin/managers",
   "invite.accepted": "/dashboard/admin/invitations",
+  "invite.staff_role": "/dashboard/accept-staff-invite",
   "teacher.application_submitted": "/dashboard/manager/applications",
   "appointment.booked": "/dashboard/teacher/appointments",
   "appointment.cancelled": "/dashboard/family/classes",

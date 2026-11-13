@@ -18,8 +18,11 @@ export function GoogleSignInButton({
     <div className="space-y-2">
       <button
         type="button"
-        className="w-full rounded-[var(--theme-radius-md)] border px-3 py-2 text-sm font-semibold"
-        style={{ borderColor: "var(--theme-line)" }}
+        className="w-full border px-3 py-2 text-sm font-semibold"
+        style={{
+          borderColor: "var(--theme-line)",
+          borderRadius: "var(--theme-radius-button)",
+        }}
         onClick={async () => {
           // Always drop the current session first. Auth.js links an unknown
           // Google identity to whoever owns the session cookie, which is how a

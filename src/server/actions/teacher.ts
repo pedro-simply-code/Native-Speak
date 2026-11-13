@@ -1,6 +1,7 @@
 "use server";
 
 import { and, eq, gte, lte } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { requireDb, requireDbAtRequest } from "@/server/db";
@@ -42,6 +43,52 @@ export async function getTeacherProfile() {
     .where(eq(teacherProfiles.userId, session.user.id))
     .limit(1);
   return row ?? null;
+}
+
+/** Teacher accepts staff assignment: profile `invited` → `active` (bookable by families). */
+export async function acceptTeacherInvitation() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return { ok: false as const, error: "Unauthorized." };
+  }
+  const roles = session.user.roles ?? [];
+  if (!roles.includes("teacher")) {
+    return { ok: false as const, error: "Teacher role required." };
+  }
+
+  const db = requireDb();
+  const [profile] = await db
+    .select({ status: teacherProfiles.status })
+    .from(teacherProfiles)
+    .where(eq(teacherProfiles.userId, session.user.id))
+    .limit(1);
+
+  if (!profile) {
+    return { ok: false as const, error: "Teacher profile not found." };
+  }
+  if (profile.status === "active") {
+    return { ok: true as const, message: "You are already an active teacher." };
+  }
+  if (profile.status === "inactive") {
+    return {
+      ok: false as const,
+      error: "This teaching profile is inactive. Contact an administrator.",
+    };
+  }
+
+  await db
+    .update(teacherProfiles)
+    .set({ status: "active", updatedAt: new Date() })
+    .where(eq(teacherProfiles.userId, session.user.id));
+
+  revalidatePath("/dashboard/teacher");
+  revalidatePath("/dashboard/family/schedule");
+
+  return {
+    ok: true as const,
+    message:
+      "You are now an active teacher. Add availability so families can book classes.",
+  };
 }
 
 export async function listWeeklyAvailability() {

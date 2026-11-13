@@ -22,7 +22,8 @@ function InviteRegisterForm() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = new FormData(e.currentTarget);
+    const formEl = e.currentTarget;
+    const form = new FormData(formEl);
     const result = await registerViaInvite({
       email,
       token,
@@ -39,6 +40,10 @@ function InviteRegisterForm() {
   return (
     <>
       <p className="text-sm text-[var(--dash-muted)]">Invite for {email}</p>
+      <p className="mt-2 text-xs text-[var(--dash-muted)]">
+        Already have this account? Use your current password to add this role.
+        If you only use Google, sign in first, then open this link again.
+      </p>
       <form onSubmit={onSubmit} className="auth-portal-card mt-4 space-y-3 p-6">
         <input
           name="firstName"
@@ -57,7 +62,7 @@ function InviteRegisterForm() {
           type="password"
           required
           minLength={8}
-          placeholder="Password"
+          placeholder="Password (new or existing account)"
           className="w-full rounded border px-3 py-2 text-sm"
         />
         <button type="submit" className="dash-btn-primary w-full">

@@ -398,14 +398,14 @@ export function ProgramsGridSection({ data }: { data: ProgramsGridSectionData })
     <section className="mx-auto w-full max-w-[var(--theme-content-max)] px-5 py-14 sm:px-6 lg:py-16">
       <ul className="grid gap-6 md:grid-cols-2">
         {data.cards.map((card, index) => (
-          <li key={`${card.href}-${index}`}>
-            <Reveal delayMs={index * 70}>
+          <li key={`${card.href}-${index}`} className="h-full">
+            <Reveal delayMs={index * 70} className="h-full">
               <Link
                 href={card.href}
-                className="mk-card mk-card--lift group grid overflow-hidden md:grid-cols-[1.1fr_1fr]"
+                className="mk-card mk-card--lift group grid h-full overflow-hidden md:grid-cols-[1.1fr_1fr]"
                 style={{ borderRadius: "var(--theme-radius-lg)" }}
               >
-                <div className="p-6">
+                <div className="flex h-full flex-col p-6">
                   <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-[var(--theme-ink)]">
                     {card.title}
                   </h2>
@@ -417,11 +417,11 @@ export function ProgramsGridSection({ data }: { data: ProgramsGridSectionData })
                   <p className="mt-3 line-clamp-3 text-sm text-[var(--theme-muted)]">
                     {card.body}
                   </p>
-                  <span className="mt-4 inline-block text-sm font-semibold text-[var(--theme-primary)]">
+                  <span className="mt-auto inline-block pt-4 text-sm font-semibold text-[var(--theme-primary)]">
                     Learn more →
                   </span>
                 </div>
-                <figure className="relative min-h-[180px]">
+                <figure className="relative min-h-[180px] md:h-full md:min-h-0">
                   <MarketingImage
                     src={card.imageSrc}
                     alt={card.title}
@@ -445,7 +445,7 @@ export function ProgramDetailSection({
 }) {
   return (
     <section className="mx-auto w-full max-w-[var(--theme-content-max)] px-5 py-12 sm:px-6">
-      <Reveal className="mx-auto max-w-3xl">
+      <Reveal>
         {data.meta ? (
           <p className="text-sm font-semibold text-[var(--theme-accent)]">
             {data.meta}

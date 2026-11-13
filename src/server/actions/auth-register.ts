@@ -5,17 +5,22 @@ import bcrypt from "bcryptjs";
 import { and, eq, gt } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { z } from "zod";
+import { auth } from "@/auth";
 import type { AppRole } from "@/lib/auth/roles";
+import { verifyPasswordForUser } from "@/lib/security/credentials";
 import { sendVerificationEmail } from "@/lib/email/send";
 import { enforceRateLimit, getClientIp } from "@/lib/security/rate-limit";
+import {
+  fulfillStaffInvite,
+  markInviteAccepted,
+} from "@/lib/auth/staff-invite";
 import { NOTIFICATION_ROUTES } from "@/lib/notifications/catalog";
 import { requireDb } from "@/server/db";
-import { notifyRoles, notifyUser } from "@/server/notifications/service";
+import { notifyRoles } from "@/server/notifications/service";
 import {
   familyProfiles,
   invitations,
   students,
-  teacherProfiles,
   userRoles,
   users,
   verificationTokens,
@@ -204,14 +209,11 @@ export async function registerViaInvite(
     return { ok: false, error: "Invite invalid or expired." };
   }
 
-  const existing = await db
-    .select({ id: users.id })
+  const [existingUser] = await db
+    .select({ id: users.id, name: users.name })
     .from(users)
     .where(eq(users.email, email))
     .limit(1);
-  if (existing.length > 0) {
-    return { ok: false, error: "An account with this email already exists." };
-  }
 
   const meta = invite.profileMeta ?? {};
   const primaryFirstName = String(
@@ -220,8 +222,78 @@ export async function registerViaInvite(
   const primaryLastName = String(
     meta.primaryLastName ?? parsed.data.primaryLastName,
   );
-  const passwordHash = await bcrypt.hash(parsed.data.password, 12);
   const fullName = `${primaryFirstName} ${primaryLastName}`;
+
+  if (existingUser) {
+    const session = await auth();
+    const signedInAsInvitee = session?.user?.id === existingUser.id;
+
+    if (!signedInAsInvitee) {
+      const verify = await verifyPasswordForUser(email, parsed.data.password);
+      if (!verify.ok) {
+        if (verify.reason === "no_password") {
+          return {
+            ok: false,
+            error:
+              "This email already has an account. Sign in (Google or email), then open this invite link again to add the role.",
+          };
+        }
+        return {
+          ok: false,
+          error:
+            "Use the password for your existing account to accept this invite.",
+        };
+      }
+    }
+
+    const [hasRole] = await db
+      .select({ role: userRoles.role })
+      .from(userRoles)
+      .where(
+        and(
+          eq(userRoles.userId, existingUser.id),
+          eq(userRoles.role, invite.role),
+        ),
+      )
+      .limit(1);
+    if (hasRole) {
+      await markInviteAccepted(invite.id);
+      return {
+        ok: true,
+        message:
+          "You already have this role. Sign in to open your dashboard.",
+      };
+    }
+
+    await db
+      .update(users)
+      .set({
+        primaryFirstName,
+        primaryLastName,
+        name: fullName,
+        legalName: String(meta.legalName ?? ""),
+        phone: String(meta.phone ?? ""),
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, existingUser.id));
+
+    await fulfillStaffInvite({
+      userId: existingUser.id,
+      invite,
+      email,
+      fullName,
+      addedRoleOnly: true,
+    });
+
+    return {
+      ok: true,
+      message: signedInAsInvitee
+        ? "Role added. Refresh the dashboard or sign in again to see new access."
+        : "Role added to your existing account. Sign in to continue.",
+    };
+  }
+
+  const passwordHash = await bcrypt.hash(parsed.data.password, 12);
 
   const [created] = await db
     .insert(users)
@@ -242,67 +314,13 @@ export async function registerViaInvite(
     return { ok: false, error: "Could not create account." };
   }
 
-  await db.insert(userRoles).values({
+  await fulfillStaffInvite({
     userId: created.id,
-    role: invite.role as AppRole,
-    assignedBy: invite.invitedBy,
+    invite,
+    email,
+    fullName,
+    addedRoleOnly: false,
   });
-
-  if (invite.role === "teacher") {
-    await db.insert(teacherProfiles).values({
-      userId: created.id,
-      bio: String(meta.bio ?? ""),
-      timezone: String(meta.timezone ?? "America/Chicago"),
-      status:
-        (meta.staffStatus as "invited" | "active" | "inactive") ?? "invited",
-      teachingAgeGroups: (meta.teachingAgeGroups as string[]) ?? [],
-      nativeLanguage: String(meta.nativeLanguage ?? "Spanish"),
-      secondaryLanguages: (meta.secondaryLanguages as string[]) ?? ["English"],
-    });
-  }
-
-  await db
-    .update(invitations)
-    .set({ status: "accepted", acceptedAt: new Date() })
-    .where(eq(invitations.id, invite.id));
-
-  const roleLabel =
-    invite.role === "manager"
-      ? "manager"
-      : invite.role === "teacher"
-        ? "teacher"
-        : "staff";
-  const href =
-    invite.role === "family"
-      ? NOTIFICATION_ROUTES["account.family_registered"]
-      : NOTIFICATION_ROUTES["invite.accepted"];
-
-  await notifyRoles(
-    ["admin"],
-    {
-      kind: "account.staff_joined",
-      title: `New ${roleLabel} joined`,
-      body: `${fullName} accepted an invite and is now active.`,
-      href,
-      meta: {
-        userId: created.id,
-        role: invite.role,
-        email,
-        name: fullName,
-      },
-    },
-    { exceptUserId: created.id },
-  );
-
-  if (invite.invitedBy) {
-    await notifyUser(invite.invitedBy, {
-      kind: "invite.accepted",
-      title: "Invite accepted",
-      body: `${fullName} joined as ${roleLabel}.`,
-      href,
-      meta: { userId: created.id, role: invite.role, name: fullName },
-    });
-  }
 
   return {
     ok: true,

@@ -41,6 +41,12 @@ export function navForRoles(roles: AppRole[]): DashNavItem[] {
       },
       {
         group: "APPS",
+        href: "/dashboard/admin/users",
+        labelKey: "nav.userRoles",
+        icon: "users",
+      },
+      {
+        group: "APPS",
         href: "/dashboard/admin/managers",
         labelKey: "nav.managers",
         icon: "userCheck",

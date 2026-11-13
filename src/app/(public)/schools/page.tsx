@@ -18,7 +18,7 @@ export default function SchoolsPage() {
               imageAlt={schools.imageAlt}
             />
             <section className="mx-auto w-full max-w-[var(--theme-content-max)] px-5 py-14 sm:px-6">
-              <Reveal className="mx-auto max-w-3xl">
+              <Reveal>
                 <ul className="space-y-4">
                   {schools.bullets.map((item) => (
                     <li

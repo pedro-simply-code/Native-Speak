@@ -1,40 +1,43 @@
-import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
 import { StaticDemoForm } from "@/components/marketing/static-demo-form";
-import { MarketingLocaleBoundary } from "@/components/i18n/marketing-locale-boundary";
+import { getMarketingContent } from "@/lib/i18n/marketing";
+import { getServerLocale } from "@/lib/i18n/locale.server";
+import "@/app/(public)/auth-portal.css";
 
-export default function FreeClassPage() {
+/** Uses `cookies()` for locale — not compatible with prerender / instant nav. */
+export const instant = false;
+
+export default async function FreeClassPage() {
+  const locale = await getServerLocale();
+  const m = getMarketingContent(locale);
+  const freeClass = m.freeClass;
+
   return (
-    <MarketingLocaleBoundary>
-      {(m) => {
-        const freeClass = m.freeClass;
-        return (
-          <>
-            <PageHero
-              eyebrow={m.ui.freeClassEyebrow}
-              title={freeClass.title}
-              description={freeClass.intro}
-              image={freeClass.image}
-              imageAlt={freeClass.imageAlt}
-            />
-            <section className="mx-auto w-full max-w-[var(--theme-content-max)] px-5 py-14 sm:px-6">
-              <Reveal className="mx-auto max-w-lg">
-                <div
-                  className="border p-8"
-                  style={{
-                    borderColor: "var(--theme-line)",
-                    borderRadius: "var(--theme-radius-xl)",
-                    boxShadow: "var(--theme-shadow-md)",
-                    background: "var(--theme-paper)",
-                  }}
-                >
-                  <StaticDemoForm submitLabel={m.ui.freeClassSubmit} />
-                </div>
-              </Reveal>
-            </section>
-          </>
-        );
+    <section
+      data-auth-portal
+      className="mk-page-hero-band border-b"
+      style={{
+        borderColor: "var(--theme-line)",
+        borderWidth: "0 0 var(--theme-border-width)",
       }}
-    </MarketingLocaleBoundary>
+    >
+      <div className="mx-auto grid w-full max-w-[var(--theme-content-max)] gap-10 px-5 pt-14 pb-8 sm:px-6 lg:grid-cols-2 lg:items-start lg:gap-12 lg:pt-16 lg:pb-8">
+        <Reveal className="lg:pt-2">
+          <p className="mk-eyebrow">{m.ui.freeClassEyebrow}</p>
+          <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-[var(--theme-ink)] sm:text-5xl">
+            {freeClass.title}
+          </h1>
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-[var(--theme-muted)]">
+            {freeClass.intro}
+          </p>
+        </Reveal>
+
+        <Reveal delayMs={80} className="w-full">
+          <div className="auth-portal-card mx-auto w-full max-w-lg p-8 lg:mx-0 lg:max-w-none">
+            <StaticDemoForm submitLabel={m.ui.freeClassSubmit} />
+          </div>
+        </Reveal>
+      </div>
+    </section>
   );
 }
