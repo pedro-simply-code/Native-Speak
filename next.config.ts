@@ -8,17 +8,17 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "cdn.pixabay.com" },
-    ],
+    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
   },
   cacheComponents: true,
-  partialPrefetching: true,
+  /** Off — was prefetching dashboard RSC from login and bouncing with auth redirects. */
+  partialPrefetching: false,
   reactCompiler: true,
   turbopack: {
     rules: {
-      "*.css": {
+      // Tailwind v4 only on app entry stylesheets — plain token files under src/styles/
+      // must not go through @tailwindcss/turbopack (dev mis-bundles them as client modules).
+      "./src/app/**/*.css": {
         loaders: ["@tailwindcss/turbopack"],
         as: "*.css",
       },

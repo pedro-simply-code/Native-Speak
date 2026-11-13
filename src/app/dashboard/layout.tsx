@@ -1,66 +1,62 @@
-import Link from "next/link";
+import { redirect } from "next/navigation";
+import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { auth } from "@/auth";
+import { AuthSessionProvider } from "@/components/providers/session-provider";
+import { AppI18nProvider } from "@/components/i18n/app-i18n-provider";
+import { DashboardMuiProvider } from "@/components/dashboard/modernize/dashboard-mui-provider";
+import { DashboardShell } from "@/components/dashboard/modernize/dashboard-shell";
+import { DashboardThemeScope } from "@/components/dashboard/modernize/dashboard-theme-scope";
+import { getServerLocale } from "@/lib/i18n/locale.server";
+import "@/app/dashboard/dashboard.css";
 
-const settingsNav = [
-  { href: "/dashboard/settings/appearance", label: "Appearance" },
-] as const;
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-dashboard-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
-export default function DashboardLayout({
+const fraunces = Fraunces({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["600", "700"],
+});
+
+export const instant = false;
+
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="flex min-h-full flex-1 flex-col bg-[var(--theme-paper)] text-[var(--theme-ink)]">
-      <header
-        className="border-b"
-        style={{
-          borderColor: "var(--theme-line)",
-          borderWidth: "0 0 var(--theme-border-width)",
-        }}
-      >
-        <div
-          className="mx-auto flex w-full max-w-[var(--theme-content-max)] items-center justify-between gap-4 px-6 py-4"
-        >
-          <div className="flex items-center gap-6">
-            <Link
-              href="/"
-              className="text-sm font-semibold text-[var(--theme-primary-deep)]"
-            >
-              Native Speak
-            </Link>
-            <span className="text-xs font-bold uppercase tracking-widest text-[var(--theme-muted)]">
-              Dashboard
-            </span>
-          </div>
-          <nav className="text-sm text-[var(--theme-muted)]">
-            <span>Admin preview</span>
-          </nav>
-        </div>
-      </header>
+  const session = await auth();
+  if (!session?.user?.id) {
+    redirect("/login?callbackUrl=/dashboard");
+  }
 
-      <div className="mx-auto flex w-full max-w-[var(--theme-content-max)] flex-1 gap-10 px-6 py-10 lg:flex-row">
-        <aside className="w-full shrink-0 lg:w-56">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--theme-muted)]">
-            Settings
-          </p>
-          <p className="mt-1 text-xs text-[var(--theme-muted)]">
-            Will move to Admin → Site settings in production.
-          </p>
-          <ul className="mt-4 space-y-1">
-            {settingsNav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="block rounded-[var(--theme-radius-sm)] px-3 py-2 text-sm font-semibold text-[var(--theme-primary-deep)] hover:bg-[var(--theme-surface)]"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </aside>
-        <div className="min-w-0 flex-1">{children}</div>
+  const locale = await getServerLocale();
+
+  return (
+    <AuthSessionProvider>
+      <div
+        className={`${plusJakarta.variable} ${fraunces.variable} min-h-dvh w-full`}
+      >
+        <AppI18nProvider initialLocale={locale}>
+          <DashboardThemeScope>
+            <DashboardMuiProvider>
+              <DashboardShell
+                user={{
+                  name: session.user.name,
+                  email: session.user.email,
+                  image: session.user.image,
+                  roles: session.user.roles ?? [],
+                }}
+              >
+                {children}
+              </DashboardShell>
+            </DashboardMuiProvider>
+          </DashboardThemeScope>
+        </AppI18nProvider>
       </div>
-    </div>
+    </AuthSessionProvider>
   );
 }

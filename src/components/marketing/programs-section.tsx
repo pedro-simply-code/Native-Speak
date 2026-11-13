@@ -2,14 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import {
-  programLevels,
-  programs,
-  programsSection,
-  type ProgramLevelId,
-} from "@/lib/marketing/home-content";
+import type { ProgramLevelId } from "@/lib/marketing/home-content";
 import { marketingImages } from "@/lib/marketing/images";
 import { programIdToSlug } from "@/lib/marketing/navigation";
+import { useMarketingContent } from "@/lib/i18n/hooks/use-marketing-content";
 import { MarketingImage } from "@/components/marketing/marketing-image";
 import { Reveal } from "@/components/marketing/reveal";
 import { SectionHeading } from "@/components/marketing/section-heading";
@@ -17,6 +13,8 @@ import { SectionHeading } from "@/components/marketing/section-heading";
 const defaultLevel: ProgramLevelId = "preschool";
 
 export function ProgramsSection() {
+  const m = useMarketingContent();
+  const { programs, programLevels, programsSection } = m;
   const [active, setActive] = useState<ProgramLevelId>(defaultLevel);
   const detail = programs[active];
   const imageSrc = marketingImages.programs[active];
@@ -35,7 +33,7 @@ export function ProgramsSection() {
       <div className="mx-auto w-full max-w-[var(--theme-content-max)] px-5 sm:px-6">
         <Reveal>
           <SectionHeading
-            eyebrow="Programs"
+            eyebrow={m.ui.programsEyebrow}
             title={programsSection.title}
             description={programsSection.subtitle}
           />
@@ -44,7 +42,7 @@ export function ProgramsSection() {
         <div
           className="mk-segmented mt-8"
           role="tablist"
-          aria-label="Program levels"
+          aria-label={m.ui.programLevelsAria}
         >
           {programLevels.map((level) => {
             const selected = level.id === active;
@@ -92,14 +90,14 @@ export function ProgramsSection() {
               href={`/programs/${programIdToSlug[active]}`}
               className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-[var(--theme-primary)] transition-transform hover:translate-x-0.5"
             >
-              View {detail.title} program →
+              {m.ui.viewProgramLink.replace("{name}", detail.title)}
             </Link>
           </div>
           <figure className="relative min-h-[240px] overflow-hidden lg:min-h-full">
             <MarketingImage
               key={active}
               src={imageSrc}
-              alt={`${detail.title} Spanish program`}
+              alt={m.ui.programImageAlt.replace("{name}", detail.title)}
               fill
               sizes="(max-width: 1024px) 100vw, 480px"
               className="motion-program-image"

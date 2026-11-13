@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
-import { footer, siteNav } from "@/lib/marketing/home-content";
 import { BrandLogo } from "@/components/marketing/brand-logo";
+import { useMarketingContent } from "@/lib/i18n/hooks/use-marketing-content";
 
 export function SiteFooter() {
+  const m = useMarketingContent();
+
   return (
     <footer
       className="mt-auto border-t"
@@ -17,16 +21,13 @@ export function SiteFooter() {
           <div>
             <BrandLogo />
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-[var(--theme-muted)]">
-              {footer.tagline}
+              {m.footer.tagline}
             </p>
-            <a
-              href={siteNav.phoneHref}
-              className="mk-phone-pill mt-4"
-            >
-              {siteNav.phone}
+            <a href={m.siteNav.phoneHref} className="mk-phone-pill mt-4">
+              {m.siteNav.phone}
             </a>
           </div>
-          {footer.columns.map((column) => (
+          {m.footer.columns.map((column) => (
             <div key={column.title}>
               <p className="mk-eyebrow text-[var(--theme-muted)] before:bg-[var(--theme-primary)]">
                 {column.title}
@@ -50,8 +51,7 @@ export function SiteFooter() {
           className="mt-10 border-t pt-6 text-xs text-[var(--theme-muted)]"
           style={{ borderColor: "var(--theme-line)" }}
         >
-          © {footer.brand}. Early-stage academy — no fabricated reviews. Photos
-          from Unsplash and Pixabay.
+          © {m.footer.brand}. {m.ui.copyright}
         </p>
       </div>
     </footer>

@@ -1,11 +1,16 @@
+"use client";
+
 import Link from "next/link";
-import { howItWorksSection } from "@/lib/marketing/home-content";
 import { ArchImageFrame } from "@/components/marketing/arch-image-frame";
 import { MarketingImage } from "@/components/marketing/marketing-image";
 import { Reveal } from "@/components/marketing/reveal";
 import { SectionHeading } from "@/components/marketing/section-heading";
+import { useMarketingContent } from "@/lib/i18n/hooks/use-marketing-content";
 
 export function HowItWorksSection() {
+  const m = useMarketingContent();
+  const { howItWorksSection } = m;
+
   return (
     <section
       className="mk-section mx-auto w-full max-w-[var(--theme-content-max)] px-5 sm:px-6"
@@ -62,7 +67,7 @@ export function HowItWorksSection() {
           href="/how-it-works"
           className="text-[var(--theme-primary)] underline-offset-2 hover:underline"
         >
-          Read the full process, class structure &amp; FAQ →
+          {m.ui.howItWorksReadMore}
         </Link>
       </p>
     </section>

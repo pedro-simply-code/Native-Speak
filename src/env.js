@@ -2,39 +2,58 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
 export const env = createEnv({
-  /**
-   * Specify your server-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars.
-   */
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
+    DATABASE_URL: z.string().url().optional(),
+    AUTH_SECRET: z.string().min(32).optional(),
+    AUTH_URL: z.string().url().optional(),
+    GOOGLE_CLIENT_ID: z.string().optional(),
+    GOOGLE_CLIENT_SECRET: z.string().optional(),
+    STRIPE_SECRET_KEY: z.string().optional(),
+    STRIPE_WEBHOOK_SECRET: z.string().optional(),
+    PAYPAL_CLIENT_ID: z.string().optional(),
+    PAYPAL_CLIENT_SECRET: z.string().optional(),
+    PAYPAL_MODE: z.enum(["sandbox", "live"]).default("sandbox"),
+    /** true = always simulate if keys missing; false = never simulate; unset = simulate in dev only */
+    BILLING_SIMULATE: z.enum(["true", "false"]).optional(),
+    CRON_SECRET: z.string().min(16).optional(),
+    JWT_ACCESS_SECRET: z.string().min(32).optional(),
+    JWT_REFRESH_SECRET: z.string().min(32).optional(),
+    EMAIL_FROM: z.string().email().optional(),
+    GMAIL_USER: z.string().email().optional(),
+    GMAIL_APP_PASSWORD: z.string().min(16).optional(),
+    UPLOADTHING_TOKEN: z.string().optional(),
   },
-
-  /**
-   * Specify your client-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars. To expose them to the client, prefix them with
-   * `NEXT_PUBLIC_`.
-   */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
+    NEXT_PUBLIC_PAYPAL_CLIENT_ID: z.string().optional(),
+    NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   },
-
-  /**
-   * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
-   * middlewares) or client-side so we need to destruct manually.
-   */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    DATABASE_URL: process.env.DATABASE_URL,
+    AUTH_SECRET: process.env.AUTH_SECRET,
+    AUTH_URL: process.env.AUTH_URL,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
+    PAYPAL_CLIENT_SECRET: process.env.PAYPAL_CLIENT_SECRET,
+    PAYPAL_MODE: process.env.PAYPAL_MODE,
+    BILLING_SIMULATE: process.env.BILLING_SIMULATE,
+    CRON_SECRET: process.env.CRON_SECRET,
+    JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET,
+    JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
+    EMAIL_FROM: process.env.EMAIL_FROM,
+    GMAIL_USER: process.env.GMAIL_USER,
+    GMAIL_APP_PASSWORD: process.env.GMAIL_APP_PASSWORD,
+    UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
-  /**
-   * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
-   * useful for Docker builds.
-   */
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
-  /**
-   * Makes it so that empty strings are treated as undefined. `SOME_VAR: z.string()` and
-   * `SOME_VAR=''` will throw an error.
-   */
   emptyStringAsUndefined: true,
 });

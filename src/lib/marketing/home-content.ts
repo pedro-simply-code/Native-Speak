@@ -178,7 +178,6 @@ export const footer = {
         { label: "Book a session", href: "/free-class" },
         { label: "Log in", href: "/login" },
         { label: "Blog", href: "/blog" },
-        { label: "Site appearance", href: "/dashboard/settings/appearance" },
       ],
     },
   ],

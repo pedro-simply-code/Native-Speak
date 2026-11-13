@@ -1,0 +1,6 @@
+.auth-portal-card {
+  border-radius: var(--theme-radius-lg);
+  border: 1px solid var(--theme-line);
+  background: var(--theme-paper);
+  box-shadow: var(--theme-shadow-card, 0 2px 8px rgba(0, 0, 0, 0.06));
+}

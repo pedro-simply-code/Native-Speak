@@ -1,17 +1,17 @@
+"use client";
+
 import Link from "next/link";
-import {
-  audienceStrip,
-  hero,
-  heroStats,
-  siteNav,
-} from "@/lib/marketing/home-content";
 import { marketingImages } from "@/lib/marketing/images";
 import { ArchImageFrame } from "@/components/marketing/arch-image-frame";
 import { MarketingButton } from "@/components/marketing/marketing-button";
 import { MarketingImage } from "@/components/marketing/marketing-image";
 import { Reveal } from "@/components/marketing/reveal";
+import { useMarketingContent } from "@/lib/i18n/hooks/use-marketing-content";
 
 export function HeroSection() {
+  const m = useMarketingContent();
+  const { hero, heroStats, siteNav, audienceStrip } = m;
+
   return (
     <section
       className="relative overflow-hidden border-b"
@@ -65,7 +65,7 @@ export function HeroSection() {
               {hero.ctaPrimary}
             </MarketingButton>
             <MarketingButton href={siteNav.loginHref} variant="soft">
-              Log in
+              {m.ui.logIn}
             </MarketingButton>
           </div>
 

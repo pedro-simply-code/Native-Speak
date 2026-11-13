@@ -24,6 +24,9 @@
 .cursor
 .agents
 
+# uploaded lesson materials (local dev)
+/storage/
+
 # misc
 .DS_Store
 *.pem

@@ -1,0 +1,115 @@
+import {
+  audienceStrip,
+  footer,
+  hero,
+  heroStats,
+  howItWorksSection,
+  operatingHours,
+  programLevels,
+  programs,
+  programsSection,
+  progressSection,
+  siteNav,
+  youCanExpect,
+} from "@/lib/marketing/home-content";
+import {
+  aboutContent,
+  blogPosts,
+  freeClassContent,
+  schoolsContent,
+} from "@/lib/marketing/pages-content";
+import {
+  classIncludesSection,
+  howItWorksFaq,
+  howItWorksOnboarding,
+  howItWorksPage,
+  proveProgressSection,
+  teacherHiring,
+  pricingTestimonialsSection,
+} from "@/lib/marketing/how-it-works-content";
+import { primaryNav, programMenuLinks } from "@/lib/marketing/navigation";
+import { pricingPage } from "@/lib/marketing/pricing-content";
+
+export function buildMarketingEn() {
+  return {
+    siteNav,
+    primaryNav: [...primaryNav],
+    programMenuLinks: [...programMenuLinks],
+    hero,
+    heroStats: [...heroStats],
+    audienceStrip,
+    howItWorksSection,
+    programsSection,
+    programLevels: [...programLevels],
+    programs,
+    progressSection,
+    operatingHours,
+    youCanExpect,
+    footer,
+    about: aboutContent,
+    schools: schoolsContent,
+    freeClass: freeClassContent,
+    blogPosts: [...blogPosts],
+    howItWorksPage,
+    howItWorksOnboarding: [...howItWorksOnboarding],
+    classIncludesSection,
+    proveProgressSection,
+    teacherHiring,
+    howItWorksFaq: [...howItWorksFaq],
+    pricingPage,
+    ui: {
+      call: "Call",
+      login: "Login",
+      logIn: "Log in",
+      tryFreeClass: "Try a free class",
+      mainNavAria: "Main",
+      copyright:
+        "Early-stage academy — no fabricated reviews. Photos from Unsplash and Pixabay.",
+      badgePopular: "Most popular",
+      badgeValue: "Best value",
+      programsEyebrow: "Programs",
+      programLevelsAria: "Program levels",
+      viewProgramLink: "View {name} program →",
+      programImageAlt: "{name} Spanish program",
+      progressEyebrow: "What to expect",
+      progressCtaBody:
+        "See how a live session fits your schedule. Pick a time and meet a certified teacher — no payment upfront.",
+      progressCtaButton: "Schedule your session",
+      howItWorksReadMore:
+        "Read the full process, class structure & FAQ →",
+      language: "Language",
+      chooseLanguage: "Choose language",
+      aboutEyebrow: "Our story",
+      processEyebrow: "Process",
+      pricingEyebrow: "Pricing",
+      stepLabel: "Step {n}",
+      buildQuote: "Build a quote now",
+      pricingTotal: "Total",
+      schoolsEyebrow: "Partnerships",
+      schoolsCta: "Schedule a partner call",
+      freeClassEyebrow: "Free trial",
+      freeClassSubmit: "Request free class",
+      faqTitle: "Frequently asked questions",
+      faqIntroBefore: "Choosing packages or credit? See also",
+      faqIntroLink: "pricing",
+      faqIntroAfter: ".",
+      howItWorksCtaTitle: "What are you waiting for?",
+      howItWorksCtaBody:
+        "Start with a free class or browse packages on the pricing page.",
+      viewPricing: "View pricing",
+      faqLink: "FAQ",
+    },
+    auth: {
+      loginEyebrow: "Student & staff portal",
+      loginTitle: "Sign in",
+      loginDesc: "Access schedules, billing, invites, and site settings.",
+      registerEyebrow: "Families",
+      registerTitle: "Create your account",
+      registerDesc:
+        "Register with Google or email to book classes and manage students.",
+    },
+    pricingTestimonialsSection,
+  };
+}
+
+export type MarketingContent = ReturnType<typeof buildMarketingEn>;

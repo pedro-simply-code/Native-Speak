@@ -7,6 +7,7 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
+    files: ["src/**/*.{js,jsx,ts,tsx,mjs,cjs}"],
     plugins: {
       "no-relative-import-paths": noRelativeImportPaths,
     },

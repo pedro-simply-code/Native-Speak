@@ -1,11 +1,15 @@
-import { siteNav } from "@/lib/marketing/home-content";
-import { primaryNav } from "@/lib/marketing/navigation";
+"use client";
+
 import { BrandLogo } from "@/components/marketing/brand-logo";
 import { MarketingButton } from "@/components/marketing/marketing-button";
 import { NavLink } from "@/components/marketing/nav-link";
 import { ProgramsNavDropdown } from "@/components/marketing/programs-nav-dropdown";
+import { AppLanguageMenu } from "@/components/i18n/app-language-menu";
+import { useMarketingContent } from "@/lib/i18n/hooks/use-marketing-content";
 
 export function SiteHeader() {
+  const m = useMarketingContent();
+
   return (
     <header
       className="sticky top-0 z-40 border-b bg-[color-mix(in_srgb,var(--theme-paper)_94%,transparent)] backdrop-blur-md motion-header"
@@ -19,9 +23,9 @@ export function SiteHeader() {
 
         <nav
           className="flex min-w-0 flex-1 flex-wrap items-center gap-0.5 lg:justify-center"
-          aria-label="Main"
+          aria-label={m.ui.mainNavAria}
         >
-          {primaryNav.map((item) =>
+          {m.primaryNav.map((item) =>
             item.href === "/programs" ? (
               <ProgramsNavDropdown key={item.href} />
             ) : (
@@ -32,23 +36,16 @@ export function SiteHeader() {
           )}
         </nav>
 
-        <div className="flex flex-wrap items-center gap-2 lg:shrink-0">
-          <a
-            href={siteNav.phoneHref}
-            className="mk-phone-pill mk-header-action order-first sm:order-none"
-          >
-            <span aria-hidden>☎</span>
-            <span className="hidden sm:inline">{siteNav.phone}</span>
-            <span className="sm:hidden">Call</span>
-          </a>
+        <div className="flex items-center gap-1.5 sm:gap-2 lg:shrink-0">
+          <AppLanguageMenu variant="marketing" />
           <NavLink
-            href={siteNav.loginHref}
+            href={m.siteNav.loginHref}
             className="font-semibold min-h-[2.375rem] items-center"
           >
-            Login
+            {m.ui.login}
           </NavLink>
-          <MarketingButton href={siteNav.trialHref} size="sm">
-            Try a free class
+          <MarketingButton href={m.siteNav.trialHref} size="sm">
+            {m.ui.tryFreeClass}
           </MarketingButton>
         </div>
       </div>
